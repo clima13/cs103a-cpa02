@@ -254,6 +254,16 @@ app.get('/polls',
   }
 )
 
+app.get('/poll/:pollId',
+  async (req,res,next) => {
+    const pollId = req.params.pollId;
+    var poll = await Poll.find({_id:pollId});
+    poll = poll[0]
+    res.locals.poll = poll;
+    res.render('poll');
+  }
+)
+
 
 app.post('/courses/bySubject',
   // show list of courses in a given subject
@@ -387,6 +397,7 @@ app.set("port", port);
 // and now we startup the server listening on that port
 const http = require("http");
 const { reset } = require("nodemon");
+const { ppid } = require("process");
 const server = http.createServer(app);
 
 server.listen(port);

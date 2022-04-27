@@ -7,7 +7,7 @@
     <tbody>
         <% for (poll of polls) { %>
             <tr>
-                <td><%=poll.title%></td><td><%=poll.description%></td>
+                <td><a href="poll/<%=poll._id%>"><%=poll.title%></a></td><td><%=poll.description%></td>
             </tr>
         <% } %>
     </tbody>
