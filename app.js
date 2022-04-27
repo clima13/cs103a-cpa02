@@ -21,11 +21,12 @@ const axios = require("axios")
 const ToDoItem = require("./models/ToDoItem")
 const Course = require('./models/Course')
 const Schedule = require('./models/Schedule')
+const Poll = require('./models/Poll')
 
 // *********************************************************** //
 //  Loading JSON datasets
 // *********************************************************** //
-const courses = require('./public/data/courses20-21.json')
+const polls = require('./public/data/polls.json')
 
 
 // *********************************************************** //
@@ -235,16 +236,21 @@ function time2str(time){
 
 app.get('/upsertDB',
   async (req,res,next) => {
-    //await Course.deleteMany({})
-    for (course of courses){
-      const {subject,coursenum,section,term}=course;
-      const num = getNum(coursenum);
-      course.num=num
-      course.suffix = coursenum.slice(num.length)
-      await Course.findOneAndUpdate({subject,coursenum,section,term},course,{upsert:true})
+    await Poll.deleteMany({})
+    for (poll of polls){
+      const {pollId}=poll;
+      await Poll.findOneAndUpdate({pollId},poll,{upsert:true})
     }
-    const num = await Course.find({}).count();
+    const num = await Poll.find({}).count();
     res.send("data uploaded: "+num)
+  }
+)
+
+app.get('/polls',
+  async (req,res,next) => {
+    const polls = await Poll.find({});
+    res.locals.polls = polls;
+    res.render('polls');
   }
 )
 
@@ -380,6 +386,7 @@ app.set("port", port);
 
 // and now we startup the server listening on that port
 const http = require("http");
+const { reset } = require("nodemon");
 const server = http.createServer(app);
 
 server.listen(port);
