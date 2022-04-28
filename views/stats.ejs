@@ -1,6 +1,25 @@
-<% for (question of poll.questions) { %>
-    <h1><%=question.question%></h1>
-    <% for (option of question.options) { %>
-        <%=option.name%>: <%=option.responses%> <br>
-    <% } %>
-<% } %>
+<h1>Poll Statistics for <%=poll.title%></h1>
+
+<hr>
+
+<% var questionNumber = 1
+for (question of poll.questions) { %>
+    <h3>Question #<%=questionNumber%>: <%=question.question%></h3>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Response</td><td>Number of Responses</td><td>Percentage of Total</td>
+            </tr>
+        </thead>
+        <tbody>
+            <% for (option of question.options) { %>
+                <tr>
+                    <td><%=option.name%></td><td><%=option.responses%></td><td>TBI</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+    
+    <hr>
+    <% questionNumber += 1
+} %>
