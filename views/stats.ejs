@@ -1,0 +1,6 @@
+<% for (question of poll.questions) { %>
+    <h1><%=question.question%></h1>
+    <% for (option of question.options) { %>
+        <%=option.name%>: <%=option.responses%> <br>
+    <% } %>
+<% } %>

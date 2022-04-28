@@ -167,7 +167,7 @@ app.get('/poll/:pollId',
     const pollId = req.params.pollId;
     const poll = await Poll.findOne({_id:pollId});
     res.locals.poll = poll;
-    
+
     res.render('poll');
   }
 )
@@ -180,6 +180,16 @@ app.post('/poll/:pollId',
     updatePollResponses(poll, req.body);
 
     res.redirect("/polls");
+  }
+)
+
+app.get('/stats/:pollId',
+  async (req,res,next) => {
+    const pollId = req.params.pollId;
+    const poll = await Poll.findOne({_id:pollId});
+    res.locals.poll = poll;
+
+    res.render('stats')
   }
 )
 
