@@ -226,6 +226,23 @@ function time2str(time){
   return `${meetingType}: ${days.join(",")}: ${min2HourMin(start)}-${min2HourMin(end)} ${location}`
 }
 
+async function updatePollResponses(poll, responses) {
+  // takes a set of question index: response pairs and increments the
+  // corresponding response count for each question
+  for (questionNumber in responses) {
+    const response = responses[questionNumber];
+    const question = poll.questions[parseInt(questionNumber)];
+
+    for (option of question.options) {
+      if (option.name == response) {
+        option.responses += 1;
+      }
+    }
+  }
+  const {pollId}=poll;
+  await Poll.findOneAndUpdate({pollId},poll,{upsert:true})
+}
+
 
 
 /* ************************
@@ -236,9 +253,10 @@ function time2str(time){
 
 app.get('/upsertDB',
   async (req,res,next) => {
-    await Poll.deleteMany({})
+    //await Poll.deleteMany({})
     for (poll of polls){
       const {pollId}=poll;
+      poll.pollId = poll._id;
       await Poll.findOneAndUpdate({pollId},poll,{upsert:true})
     }
     const num = await Poll.find({}).count();
@@ -257,10 +275,19 @@ app.get('/polls',
 app.get('/poll/:pollId',
   async (req,res,next) => {
     const pollId = req.params.pollId;
-    var poll = await Poll.find({_id:pollId});
-    poll = poll[0]
-    res.locals.poll = poll;
+    var poll = await Poll.findOne({_id:pollId});
     res.render('poll');
+  }
+)
+
+app.post('/poll/:pollId',
+  async (req,res,next) => {
+    const pollId = req.params.pollId;
+    var poll = await Poll.findOne({_id:pollId}).lean();
+
+    updatePollResponses(poll, req.body);
+
+    res.redirect("/polls");
   }
 )
 

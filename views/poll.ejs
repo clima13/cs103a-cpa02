@@ -1,2 +1,18 @@
-NAME: <%=poll.title%><br>
-DESC: <%=poll.description%>
+<h1><%=poll.title%></h1>
+<p><%=poll.description%></p>
+
+<hr>
+
+<form method="post">
+    <% var questionNumber = 0
+    for (question of poll.questions) { %>
+        <h3><%=question.question%></h3>
+        <select name="<%=questionNumber%>">
+            <% for (option of question.options) { %>
+                <option><%=option.name%></option>
+            <% } %>
+        </select>
+        <% questionNumber += 1
+    } %>
+    <input type="submit" value="Submit">
+</form>
