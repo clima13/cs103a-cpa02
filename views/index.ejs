@@ -1,34 +1,26 @@
 
 
     <div class="jumbotron">
-        <h1>PA03: Course Finder Fall20-Spr21 </h1>
+        <h1>CPA02: Polling Forum</h1>
         <p></p>
     </div>
 
     <p class="p-3 m-3 border border-primary bg-light">
-        The goal of this assignment is to write an app that will let
-        students pick their courses for the year. Since we don't have 
-        the data for this year (due to workday issues), we will use the 
-        2020-2021 Academic year data. You must signup or login to see
-        the courses and create your schedule.
+        Users can create polls, fill out existing polls, and view poll statistics
     </p>
     
-    <% if (true || loggedIn) {%>  
-        <form method="post" action="/courses/bySubject">
-            Show Courses by Subject: 
-              <input type="text" name="subject" 
-                     placeholder="e.g. COSI">
-            <input type="submit">
-        </form>
-        <br>
-        <form method="post" action="/courses/byInst">
-            Show Courses by Instructor Email: 
-            <input type="text" name="email" 
-                   placeholder="e.g. tjhickey">
-            <input type="submit">
-        </form>
-        <br>
-        <a href="/schedule/show">Show Schedule</a>
+    <% if (loggedIn) {%>  
+        <div class="d-flex flex-wrap justify-content-center text-center overflow-scroll m-3 p-3">
+            <div class="border border-primary bg-light p-3 m-3">
+                <a class="btn btn-primary" href="/polls" role="button">View All Polls</a>
+            </div>
+            <div class="border border-primary bg-light p-3 m-3">
+                <a class="btn btn-primary" href="/error" role="button">Create A Poll</a>
+            </div>
+        </div>
+    <% } else { %>
+        <h4>Please log in to use the app:</h4>
+        <a class="btn btn-info" href="/login" role="button">Login</a>
     <% } %>
 
 
