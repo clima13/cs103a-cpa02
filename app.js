@@ -126,9 +126,11 @@ async function updatePollResponses(poll, responses) {
     for (option of question.options) {
       if (option.name == response) {
         option.responses += 1;
+        question.totalResponses += 1;
       }
     }
   }
+  poll.totalResponses += 1;
   const {_id}=poll;
   await Poll.findOneAndUpdate({_id},poll,{upsert:true})
 }
@@ -145,9 +147,8 @@ app.get('/upsertDB',
   async (req,res,next) => {
     //await Poll.deleteMany({})
     for (poll of polls){
-      const {_id}=poll;
-      poll.pollId = _id;
-      await Poll.findOneAndUpdate({_id},poll,{upsert:true})
+      const {title}=poll;
+      await Poll.findOneAndUpdate({title},poll,{upsert:true})
     }
     const num = await Poll.find({}).count();
     res.send("data uploaded: "+num)

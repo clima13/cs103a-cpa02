@@ -6,8 +6,10 @@ const ObjectId = Schema.Types.ObjectId;
 var pollSchema = Schema( {
   title: String,
   description: String,
+  totalResponses: Number,
   questions: [{
       question: String,
+      totalResponses: Number,
       options: [{
           name: String,
           responses: Number,

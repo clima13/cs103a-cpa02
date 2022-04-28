@@ -12,14 +12,19 @@ for (question of poll.questions) { %>
             </tr>
         </thead>
         <tbody>
-            <% for (option of question.options) { %>
+            <% for (option of question.options) {
+                var percentOfTotal = 0
+                if (question.totalResponses > 0) {
+                    percentOfTotal = option.responses / question.totalResponses * 100
+                    percentOfTotal = percentOfTotal.toFixed(2)
+                } %>
                 <tr>
-                    <td><%=option.name%></td><td><%=option.responses%></td><td>TBI</td>
+                    <td><%=option.name%></td><td><%=option.responses%></td><td><%=percentOfTotal%>%</td>
                 </tr>
             <% } %>
         </tbody>
     </table>
-    
+
     <hr>
     <% questionNumber += 1
 } %>
