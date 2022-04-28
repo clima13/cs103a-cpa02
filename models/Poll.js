@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 var pollSchema = Schema( {
-  pollId: ObjectId,
   title: String,
   description: String,
   questions: [{

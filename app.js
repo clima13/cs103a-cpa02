@@ -129,8 +129,8 @@ async function updatePollResponses(poll, responses) {
       }
     }
   }
-  const {pollId}=poll;
-  await Poll.findOneAndUpdate({pollId},poll,{upsert:true})
+  const {_id}=poll;
+  await Poll.findOneAndUpdate({_id},poll,{upsert:true})
 }
 
 
@@ -145,9 +145,9 @@ app.get('/upsertDB',
   async (req,res,next) => {
     //await Poll.deleteMany({})
     for (poll of polls){
-      const {pollId}=poll;
-      poll.pollId = poll._id;
-      await Poll.findOneAndUpdate({pollId},poll,{upsert:true})
+      const {_id}=poll;
+      poll.pollId = _id;
+      await Poll.findOneAndUpdate({_id},poll,{upsert:true})
     }
     const num = await Poll.find({}).count();
     res.send("data uploaded: "+num)
@@ -165,7 +165,9 @@ app.get('/polls',
 app.get('/poll/:pollId',
   async (req,res,next) => {
     const pollId = req.params.pollId;
-    var poll = await Poll.findOne({_id:pollId});
+    const poll = await Poll.findOne({_id:pollId});
+    res.locals.poll = poll;
+    
     res.render('poll');
   }
 )

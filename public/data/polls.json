@@ -1,1 +1,2 @@
-[{"title":"Test","description":"This is a test","questions":[{"question":"Dogs or cats?","test":5,"options":[{"name":"Dog","responses":0},{"name":"Cat","responses":1}]}]}]
+[{"pollId":"1","title":"Test","description":"This is a test","questions":[{"question":"Dogs or cats?","options":[{"name":"Dog","responses":0},{"name":"Cat","responses":1}]}]},
+{"pollId":"2","title":"Test2","description":"This is another test","questions":[{"question":"Birds or hamsters?","options":[{"name":"Bird","responses":3},{"name":"Hamster","responses":2}]}]}]
