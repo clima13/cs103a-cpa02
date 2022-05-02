@@ -135,9 +135,10 @@ async function updatePollResponses(poll, responses) {
   await Poll.findOneAndUpdate({_id},poll,{upsert:true})
 }
 
-async function createPollAndUpsert(title, description, questions) {
+async function createPollAndUpsert(title, description, questions, username) {
   const currentDate = new Date()
-  const poll = new Poll({title, description, totalResponses:0, dateCreated:currentDate, questions})
+  const poll = new Poll({title, description, totalResponses:0, dateCreated:currentDate, 
+    createdBy:username, questions})
   await poll.save()
 }
 
@@ -268,7 +269,8 @@ app.get('/makePoll',
 app.post('/makePoll',
   async (req,res,next) => {
     const {title,description,questions} = parsePollData(req.body)
-    createPollAndUpsert(title, description, questions)
+    const username = req.session.username
+    createPollAndUpsert(title, description, questions, username)
 
     res.redirect('/')
   }

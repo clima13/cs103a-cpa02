@@ -7,6 +7,7 @@ var pollSchema = Schema( {
   description: String,
   totalResponses: Number,
   dateCreated: Date,
+  createdBy: String,
   questions: [{
       question: String,
       totalResponses: Number,
@@ -15,6 +16,7 @@ var pollSchema = Schema( {
           responses: Number,
       }],
   }],
+  usersResponded: [String],
 } );
 
 module.exports = mongoose.model( 'Poll', pollSchema );
