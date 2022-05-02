@@ -2,8 +2,14 @@
     <% for (poll of polls) { %>
         <div class="row bg-light border border-primary m-3 p-3">
             <div class="col">
-                <h1><%=poll.title%></h1>
-                <p><%=poll.description%></p>
+                <div class="row mb-5">
+                    <h1><%=poll.title%></h1>
+                    <p><%=poll.description%></p>
+                </div>
+                <div class="row">
+                    <p>Total Responses: <%=poll.totalResponses%></p>
+                    <p>Date Created: <%=poll.dateCreated%></p>
+                </div>
             </div>
             <div class="col">
                 <div class="row justify-content-end my-4">

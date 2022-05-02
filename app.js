@@ -135,6 +135,36 @@ async function updatePollResponses(poll, responses) {
   await Poll.findOneAndUpdate({_id},poll,{upsert:true})
 }
 
+async function createPollAndUpsert(title, description, questions) {
+  const currentDate = new Date()
+  const poll = new Poll({title, description, totalResponses:0, dateCreated:currentDate, questions})
+  await poll.save()
+}
+
+function parsePollData(data) {
+  const {title,description}=data
+  var questions = []
+  var question = null
+
+  for (key in data) {
+    if (key.includes("question")) {
+      if (question != null) {
+        questions.push(question)
+      }
+      question = {question:data[key],totalResponses:0,options:[]}
+    }
+    else if (key.includes("option")) {
+      question.options.push({name:data[key],responses:0})
+    }
+  }
+
+  if (question != null) {
+    questions.push(question)
+  }
+
+  return {title,description,questions}
+}
+
 
 
 /* ************************
@@ -142,6 +172,22 @@ async function updatePollResponses(poll, responses) {
    ************************ */
 // this route loads in the courses into the Course collection
 // or updates the courses if it is not a new collection
+
+app.get('/newPoll',
+  async (req,res,next) => {
+    q = {question:"Test?",totalResponses:0,options:[{name:"1",responses:1},{name:"2",responses:2}]}
+    questions = [q]
+    createPollAndUpsert("Test3", "this is yet another test", questions)
+    res.redirect("/polls")
+  }
+)
+
+app.get('/upsertDelete', 
+  async (req,res,next) => {
+    await Poll.deleteMany({})
+    res.redirect('/upsertDB')
+  }
+)
 
 app.get('/upsertDB',
   async (req,res,next) => {
@@ -194,6 +240,21 @@ app.get('/stats/:pollId',
   }
 )
 
+app.get('/makePoll', 
+  async (req,res,next) => {
+    res.render('makePoll')
+  }
+)
+
+app.post('/makePoll',
+  async (req,res,next) => {
+    const {title,description,questions} = parsePollData(req.body)
+    createPollAndUpsert(title, description, questions)
+
+    res.redirect('/makePoll')
+  }
+)
+
 
 // here we catch 404 errors and forward to error handler
 app.use(function(req, res, next) {
@@ -223,7 +284,8 @@ app.set("port", port);
 // and now we startup the server listening on that port
 const http = require("http");
 const { reset } = require("nodemon");
-const { ppid } = require("process");
+const { ppid, title } = require("process");
+const { url } = require("inspector");
 const server = http.createServer(app);
 
 server.listen(port);

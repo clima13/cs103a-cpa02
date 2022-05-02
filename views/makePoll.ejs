@@ -1,0 +1,77 @@
+<form method="post">
+    <p class="test">Hello</p>
+    <input name="title" type="text" placeholder="Title" class="form-control-lg mt-3"> <br>
+    <textarea name="description" placeholder="Description" class="mt-3"></textarea> <br>
+
+    <hr>
+
+    <div class="form-group questions"></div>
+
+    <button onclick="addQuestion()" type="button" class="btn btn-primary">New Question</button> <br>
+    <button type="submit" class="btn btn-info mt-3">Create Poll</button>
+</form>
+
+<script>
+    var questionNumber = 0;
+    var uniqueOptionNumber = 0
+
+    function addQuestion() {
+        questionNumber += 1;
+
+        //test = document.querySelector(".test");
+
+        var questionsGroup = document.querySelector(".questions");
+        questionsGroup.questionNumber = questionNumber;
+
+        var newQuestionGroup = document.createElement("div");
+        newQuestionGroup.setAttribute("class", "form-group question" + questionNumber.toString());
+
+        var header = document.createElement("h3");
+        header.innerText = "Question #" + questionNumber.toString();
+
+        var question = document.createElement("textarea");
+        question.setAttribute("name", "questionText" + questionNumber.toString());
+        question.setAttribute("placeholder", "Question here");
+
+        var options = document.createElement("div");
+        options.setAttribute("class", "form-group options" + questionNumber.toString());
+
+        var newOptionsButton = document.createElement("button");
+        newOptionsButton.setAttribute("questionNumber", questionNumber.toString())
+        newOptionsButton.setAttribute("onclick", "addOption(this.getAttribute(\"questionNumber\"))");
+        newOptionsButton.setAttribute("type", "button");
+        newOptionsButton.setAttribute("class", "btn btn-primary mt-3")
+        newOptionsButton.innerText = "New Option"
+
+        var breakLine = document.createElement("hr");
+
+        newQuestionGroup.appendChild(header);
+        newQuestionGroup.appendChild(question);
+        newQuestionGroup.appendChild(options);
+        newQuestionGroup.appendChild(newOptionsButton)
+        newQuestionGroup.appendChild(breakLine);
+
+        questionsGroup.appendChild(newQuestionGroup);
+    }
+
+    function addOption(questionNum) {
+        uniqueOptionNumber += 1;
+
+        var optionGroup = document.querySelector(".options" + questionNum.toString());
+
+        var newOption = document.createElement("input");
+        newOption.setAttribute("name", "option" + questionNum.toString() + "-" + uniqueOptionNumber.toString());
+        newOption.setAttribute("type", "text");
+        newOption.setAttribute("placeholder", "Option text here");
+        newOption.setAttribute("class", "mt-3")
+
+        var breakLine = document.createElement("br");
+
+        optionGroup.appendChild(newOption);
+        optionGroup.appendChild(breakLine);
+
+        // Functionality tester
+        test = document.querySelector(".test");
+        test.innerText = "yeet";
+    }
+</script>

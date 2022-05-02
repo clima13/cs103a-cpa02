@@ -7,6 +7,7 @@ var pollSchema = Schema( {
   title: String,
   description: String,
   totalResponses: Number,
+  dateCreated: Date,
   questions: [{
       question: String,
       totalResponses: Number,
