@@ -173,15 +173,6 @@ function parsePollData(data) {
 // this route loads in the courses into the Course collection
 // or updates the courses if it is not a new collection
 
-app.get('/newPoll',
-  async (req,res,next) => {
-    q = {question:"Test?",totalResponses:0,options:[{name:"1",responses:1},{name:"2",responses:2}]}
-    questions = [q]
-    createPollAndUpsert("Test3", "this is yet another test", questions)
-    res.redirect("/polls")
-  }
-)
-
 app.get('/upsertDelete', 
   async (req,res,next) => {
     await Poll.deleteMany({})
@@ -222,7 +213,7 @@ app.get('/poll/:pollId',
 app.post('/poll/:pollId',
   async (req,res,next) => {
     const pollId = req.params.pollId;
-    var poll = await Poll.findOne({_id:pollId}).lean();
+    var poll = await Poll.findOne({_id:pollId});
 
     updatePollResponses(poll, req.body);
 
@@ -251,7 +242,7 @@ app.post('/makePoll',
     const {title,description,questions} = parsePollData(req.body)
     createPollAndUpsert(title, description, questions)
 
-    res.redirect('/makePoll')
+    res.redirect('/')
   }
 )
 
