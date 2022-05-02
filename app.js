@@ -116,7 +116,7 @@ app.get("/about", (req, res, next) => {
   Other functions
    ************************ */
 
-async function updatePollResponses(poll, responses) {
+async function updatePollResponses(poll, responses, username) {
   // takes a set of question index: response pairs and increments the
   // corresponding response count for each question
   for (questionNumber in responses) {
@@ -131,6 +131,7 @@ async function updatePollResponses(poll, responses) {
     }
   }
   poll.totalResponses += 1;
+  poll.usersResponded.push(username);
   const {_id}=poll;
   await Poll.findOneAndUpdate({_id},poll,{upsert:true})
 }
@@ -235,7 +236,12 @@ app.get('/poll/:pollId',
     const poll = await Poll.findOne({_id:pollId});
     res.locals.poll = poll;
 
-    res.render('poll');
+    if (poll.usersResponded.includes(req.session.username)) {
+      res.render('alreadyDone')
+    }
+    else {
+      res.render('poll');
+    }
   }
 )
 
@@ -244,7 +250,7 @@ app.post('/poll/:pollId',
     const pollId = req.params.pollId;
     var poll = await Poll.findOne({_id:pollId});
 
-    updatePollResponses(poll, req.body);
+    updatePollResponses(poll, req.body, req.session.username);
 
     res.redirect("/polls");
   }
