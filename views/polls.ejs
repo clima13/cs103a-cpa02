@@ -1,3 +1,21 @@
+<form method="post">
+    Sorting Method: <select value="<%=selectedSort%>" onchange="this.form.submit()" name="sort" 
+        class="form-control-sm mt-3 sortMethod">
+        <option>Total Responses (Ascending)</option>
+        <option>Total Responses (Descending)</option>
+        <option>Date Created (Earliest First)</option>
+        <option>Date Created (Latest First)</option>
+    </select>
+</form>
+
+<script>
+    var sortSelectBox = document.querySelector(".sortMethod")
+    var test = "<%-selectedSort%>"
+    sortSelectBox.value = test
+</script>
+
+<br>
+
 <div class="d-flex flex-column flex-wrap overflow-scroll m-3 p-3">
     <% for (poll of polls) { %>
         <div class="row bg-light border border-primary m-3 p-3">

@@ -196,7 +196,35 @@ app.get('/polls',
   async (req,res,next) => {
     const polls = await Poll.find({});
     res.locals.polls = polls;
+    res.locals.selectedSort = "Total Responses (Ascending)"
+
     res.render('polls');
+  }
+)
+
+app.post('/polls',
+  async (req,res,next) => {
+    var sortFunction = (a,b) => a - b
+    const sortName = req.body.sort
+
+    if (sortName == "Total Responses (Ascending)") {
+      sortFunction = (a,b) => a.totalResponses - b.totalResponses
+    }
+    else if (sortName == "Total Responses (Descending)") {
+      sortFunction = (a,b) => b.totalResponses - a.totalResponses
+    }
+    else if (sortName == "Date Created (Earliest First)") {
+      sortFunction = (a,b) => a.dateCreated - b.dateCreated
+    }
+    else if (sortName == "Date Created (Latest First)") {
+      sortFunction = (a,b) => b.dateCreated - a.dateCreated
+    }
+
+    const polls = (await Poll.find({})).sort(sortFunction)
+    res.locals.polls = polls;
+    res.locals.selectedSort = sortName;
+
+    res.render('polls')
   }
 )
 
