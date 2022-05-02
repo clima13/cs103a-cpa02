@@ -195,6 +195,7 @@ app.get('/upsertDB',
 )
 
 app.get('/polls',
+  isLoggedIn,
   async (req,res,next) => {
     const polls = await Poll.find({});
     res.locals.polls = polls;
@@ -231,6 +232,7 @@ app.post('/polls',
 )
 
 app.get('/poll/:pollId',
+  isLoggedIn,
   async (req,res,next) => {
     const pollId = req.params.pollId;
     const poll = await Poll.findOne({_id:pollId});
@@ -257,6 +259,7 @@ app.post('/poll/:pollId',
 )
 
 app.get('/stats/:pollId',
+  isLoggedIn,
   async (req,res,next) => {
     const pollId = req.params.pollId;
     const poll = await Poll.findOne({_id:pollId});
@@ -267,6 +270,7 @@ app.get('/stats/:pollId',
 )
 
 app.get('/makePoll', 
+  isLoggedIn,
   async (req,res,next) => {
     res.render('makePoll')
   }
