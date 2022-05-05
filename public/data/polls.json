@@ -1,2 +1,0 @@
-[{"pollId":"1","title":"Test","description":"This is a test","totalResponses":0,"questions":[{"question":"Dogs or cats?","totalResponses":0,"options":[{"name":"Dog","responses":0},{"name":"Cat","responses":0}]}]},
-{"pollId":"2","title":"Test2","description":"This is another test","totalResponses":0,"questions":[{"question":"Birds or hamsters?","totalResponses":0,"options":[{"name":"Bird","responses":0},{"name":"Hamster","responses":0}]}]}]

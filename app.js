@@ -20,18 +20,14 @@ const axios = require("axios")
 // *********************************************************** //
 const Poll = require('./models/Poll')
 
-// *********************************************************** //
-//  Loading JSON datasets
-// *********************************************************** //
-const polls = require('./public/data/polls.json')
-
 
 // *********************************************************** //
 //  Connecting to the database
 // *********************************************************** //
 
 const mongoose = require( 'mongoose' );
-const mongodb_URI = process.env.mongodb_URI;
+// const mongodb_URI = process.env.mongodb_URI;
+const mongodb_URI = 'mongodb://localhost:27017/pollApp'
 
 mongoose.connect( mongodb_URI, { useNewUrlParser: true, useUnifiedTopology: true } );
 // fix deprecation warnings
@@ -75,7 +71,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Here we enable session handling using cookies
 app.use(
   session({
-    secret: process.env.SECRET, 
+    secret: process.env.SECRET || 'zzbbyanana789sdfa8f9ds8f90ds87f8d9s789fds', 
     resave: false,
     saveUninitialized: false
   })
@@ -173,25 +169,6 @@ function parsePollData(data) {
    ************************ */
 // this route loads in the courses into the Course collection
 // or updates the courses if it is not a new collection
-
-app.get('/upsertDelete', 
-  async (req,res,next) => {
-    await Poll.deleteMany({})
-    res.redirect('/upsertDB')
-  }
-)
-
-app.get('/upsertDB',
-  async (req,res,next) => {
-    //await Poll.deleteMany({})
-    for (poll of polls){
-      const {title}=poll;
-      await Poll.findOneAndUpdate({title},poll,{upsert:true})
-    }
-    const num = await Poll.find({}).count();
-    res.send("data uploaded: "+num)
-  }
-)
 
 app.get('/polls',
   isLoggedIn,
