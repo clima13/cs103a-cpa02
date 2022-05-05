@@ -31,8 +31,7 @@ const polls = require('./public/data/polls.json')
 // *********************************************************** //
 
 const mongoose = require( 'mongoose' );
-//const mongodb_URI = 'mongodb://localhost:27017/cs103a_todo'
-const mongodb_URI = 'mongodb+srv://clima313:8gQUeWtBtWlHGNNs@cluster0.yuor6.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const mongodb_URI = process.env.mongodb_URI;
 
 mongoose.connect( mongodb_URI, { useNewUrlParser: true, useUnifiedTopology: true } );
 // fix deprecation warnings
@@ -76,7 +75,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Here we enable session handling using cookies
 app.use(
   session({
-    secret: "zzbbyanana789sdfa8f9ds8f90ds87f8d9s789fds", // this ought to be hidden in process.env.SECRET
+    secret: process.env.SECRET, 
     resave: false,
     saveUninitialized: false
   })
