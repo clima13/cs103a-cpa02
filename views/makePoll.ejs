@@ -1,4 +1,4 @@
-<form method="post">
+<form method="post" id="pollForm">
     <input name="title" type="text" placeholder="Title" class="form-control-lg mt-3"> <br>
     <textarea name="description" placeholder="Description" class="mt-3"></textarea> <br>
 
@@ -7,12 +7,22 @@
     <div class="form-group questions"></div>
 
     <button onclick="addQuestion()" type="button" class="btn btn-primary">New Question</button> <br>
-    <button type="submit" class="btn btn-info mt-3">Create Poll</button>
+    <button onclick="submitForm()" type="button" class="btn btn-info mt-3">Create Poll</button>
+
+    <p class="errorMessage"></p>
 </form>
 
 <script>
     var questionNumber = 0;
-    var uniqueOptionNumber = 0
+    var uniqueOptionNumber = 0;
+
+    function submitForm() {
+        var form = document.getElementById("pollForm");
+
+
+
+        form.submit();
+    }
 
     function addQuestion() {
         questionNumber += 1;
@@ -21,9 +31,10 @@
         questionsGroup.questionNumber = questionNumber;
 
         var newQuestionGroup = document.createElement("div");
-        newQuestionGroup.setAttribute("class", "form-group question" + questionNumber.toString());
+        newQuestionGroup.setAttribute("class", "form-group question question" + questionNumber.toString());
 
         var header = document.createElement("h3");
+        header.setAttribute("class", "questionHeader");
         header.innerText = "Question #" + questionNumber.toString();
 
         var question = document.createElement("textarea");
@@ -31,21 +42,39 @@
         question.setAttribute("placeholder", "Question here");
 
         var options = document.createElement("div");
-        options.setAttribute("class", "form-group options" + questionNumber.toString());
+        options.setAttribute("class", "form-group options options" + questionNumber.toString());
 
         var newOptionsButton = document.createElement("button");
-        newOptionsButton.setAttribute("questionNumber", questionNumber.toString())
+        newOptionsButton.setAttribute("questionNumber", questionNumber.toString());
         newOptionsButton.setAttribute("onclick", "addOption(this.getAttribute(\"questionNumber\"))");
         newOptionsButton.setAttribute("type", "button");
-        newOptionsButton.setAttribute("class", "btn btn-primary mt-3")
-        newOptionsButton.innerText = "New Option"
+        newOptionsButton.setAttribute("class", "btn btn-primary mt-3 me-2 questionModifyButton");
+        newOptionsButton.innerText = "New Option";
+
+        var deleteOptionButton = document.createElement("button");
+        deleteOptionButton.setAttribute("questionNumber", questionNumber.toString());
+        deleteOptionButton.setAttribute("onclick", "deleteOption(this.getAttribute(\"questionNumber\"))");
+        deleteOptionButton.setAttribute("type", "button");
+        deleteOptionButton.setAttribute("class", "btn btn-primary mt-3 me-2 questionModifyButton");
+        deleteOptionButton.innerText = "Delete Option";
+
+        var deleteQuestionButton = document.createElement("button");
+        deleteQuestionButton.setAttribute("questionNumber", questionNumber.toString());
+        deleteQuestionButton.setAttribute("onclick", "deleteQuestion(this.getAttribute(\"questionNumber\"))");
+        deleteQuestionButton.setAttribute("type", "button");
+        deleteQuestionButton.setAttribute("class", "btn btn-primary mt-3 questionModifyButton");
+        deleteQuestionButton.innerText = "Delete Question";
 
         var breakLine = document.createElement("hr");
 
         newQuestionGroup.appendChild(header);
         newQuestionGroup.appendChild(question);
         newQuestionGroup.appendChild(options);
-        newQuestionGroup.appendChild(newOptionsButton)
+
+        newQuestionGroup.appendChild(newOptionsButton);
+        newQuestionGroup.appendChild(deleteOptionButton);
+        newQuestionGroup.appendChild(deleteQuestionButton);
+
         newQuestionGroup.appendChild(breakLine);
 
         questionsGroup.appendChild(newQuestionGroup);
@@ -66,5 +95,37 @@
 
         optionGroup.appendChild(newOption);
         optionGroup.appendChild(breakLine);
+    }
+
+    function deleteOption(questionNum) {
+        var optionGroup = document.querySelector(".options" + questionNum.toString());
+        // Removing both the option input and the break object
+        optionGroup.removeChild(optionGroup.lastChild);
+        optionGroup.removeChild(optionGroup.lastChild);
+    }
+
+    function deleteQuestion(questionNum) {
+        var question = document.querySelector(".question" + questionNum.toString());
+        question.remove();
+        updateQuestionNumbers();
+    }
+
+    function updateQuestionNumbers() {
+        questionNumber = 0;
+        for (question of document.querySelectorAll(".question")) {
+            questionNumber += 1;
+
+            question.setAttribute("class", "form-group question question" + questionNumber.toString());
+            
+            var questionHeader = question.querySelector(".questionHeader");
+            var buttons = question.querySelectorAll(".questionModifyButton");
+            var optionsGroup = question.querySelector(".options");
+
+            questionHeader.innerText = "Question #" + questionNumber.toString();
+            for (button of buttons) {
+                button.setAttribute("questionNumber", questionNumber.toString());
+            }
+            optionsGroup.setAttribute("class", "form-group options options" + questionNumber.toString());
+        }
     }
 </script>
