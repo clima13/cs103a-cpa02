@@ -26,8 +26,8 @@ const Poll = require('./models/Poll')
 // *********************************************************** //
 
 const mongoose = require( 'mongoose' );
-// const mongodb_URI = process.env.mongodb_URI;
-const mongodb_URI = 'mongodb://localhost:27017/pollApp'
+const mongodb_URI = process.env.mongodb_URI;
+// const mongodb_URI = 'mongodb://localhost:27017/pollApp'
 
 mongoose.connect( mongodb_URI, { useNewUrlParser: true, useUnifiedTopology: true } );
 // fix deprecation warnings
