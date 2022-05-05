@@ -1,7 +1,13 @@
 # cs103a-cpa02
 
+## Demo Video
+https://drive.google.com/drive/folders/1H1Lzu7Vy114FLd5T8YEgjNj-stPsd0Z_?usp=sharing
+
+
 ## Using the app
 Visit the cloud-based app at https://mysterious-atoll-60410.herokuapp.com
+
+This app basically allows people to create polls and fill out the polls of others. So you could come up with any (multiple choice) question, throw it out there, and see if people respond. 
 
 You will first be prompted to log in and directed to the login page. The app will be inaccessible if you aren't logged in. Create a new account if this is your first time using the app. 
 
